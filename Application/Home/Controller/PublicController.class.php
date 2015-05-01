@@ -124,7 +124,14 @@ class PublicController extends Controller {
         }
     }
 
-	// 登录检测
+	
+    // 检测输入的验证码是否正确，$code为用户输入的验证码字符串
+    function check_verify($code, $id = ''){
+    	$verify = new \Think\Verify();    
+    	return $verify->check($code, $id);
+    }
+    
+    // 登录检测
 	public function checkLogin() {
 		if(empty($_POST['account'])) {
 			$this->error('帐号错误！');
@@ -133,16 +140,17 @@ class PublicController extends Controller {
 		}elseif (empty($_POST['verify'])){
 			$this->error('验证码必须！');
 		}
+		
+		if(! $this->check_verify($_POST['verify'])) {
+			$this->error('验证码错误！');
+		}
+		
         //生成认证条件
         $map            =   array();
 		// 支持使用绑定帐号登录
 		$map['account']	= $_POST['account'];
         $map["status"]	=	array('gt',0);
-		if($_SESSION['verify'] != md5($_POST['verify'])) {
-			$this->error('验证码错误！');
-		}
-		import ( 'ORG.Util.RBAC' );
-        $authInfo = \RBAC::authenticate($map);
+        $authInfo = \ORG\Util\Rbac::authenticate($map);
         //使用用户名、密码和状态的方式进行认证
         if(false === $authInfo) {
             $this->error('帐号不存在或已禁用！');
@@ -170,7 +178,7 @@ class PublicController extends Controller {
 			$User->save($data);
 
 			// 缓存访问权限
-            \RBAC::saveAccessList();
+            \ORG\Util\Rbac::saveAccessList();
 			$this->success('登录成功！');
 
 		}
@@ -209,9 +217,8 @@ class PublicController extends Controller {
 	}
 	public function verify()
     {
-		$type	 =	 isset($_GET['type'])?$_GET['type']:'gif';
-        import("ORG.Util.Image");
-        \Image::buildImageVerify(4,1,$type);
+		$Verify = new \Think\Verify();
+		$Verify->entry();
     }
 	// 修改资料
 	public function change() {

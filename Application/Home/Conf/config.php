@@ -16,7 +16,8 @@ $config	= array(
 	'DB_PORT'=>'3306',
 	'DB_PREFIX'=>'',
 
-	'APP_AUTOLOAD_PATH'=>'@.TagLib',
+	//'APP_AUTOLOAD_PATH'=>'@.TagLib',
+	//'DEFAULT_MODULE' => 'Home',
 	'SESSION_AUTO_START'=>true,
 
 	'VAR_PAGE'=>'pageNum',
@@ -27,7 +28,7 @@ $config	= array(
     'ADMIN_AUTH_KEY'=>'administrator',
 	'USER_AUTH_MODEL'=>'User',	// 默认验证数据表模型
 	'AUTH_PWD_ENCODER'=>'md5',	// 用户认证密码加密方式
-	'USER_AUTH_GATEWAY'=>'/Public/login',	// 默认认证网关
+	'USER_AUTH_GATEWAY'=>'/Home/Public/login',	// 默认认证网关
 	'NOT_AUTH_MODULE'=>'Public',		// 默认无需认证模块
 	'REQUIRE_AUTH_MODULE'=>'',		// 默认需要认证模块
 	'NOT_AUTH_ACTION'=>'',		// 默认无需认证操作
