@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 // $Id: Page.class.php 2712 2012-02-06 10:12:49Z liu21st $
-
+namespace Org\Util;
 class Page {
     // 分页栏每页显示的页数
     public $rollPage = 5;

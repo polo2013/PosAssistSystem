@@ -3,14 +3,12 @@ namespace Home\Controller;
 use Think\Controller;
 class CommonController extends Controller {
 	function _initialize() {
-		import('ORG.Util.Cookie');
 		// 用户权限检查
 		if (C ( 'USER_AUTH_ON' ) && !in_array(MODULE_NAME,explode(',',C('NOT_AUTH_MODULE')))) {
-			import('ORG.Util.RBAC');
-			if (! \RBAC::AccessDecision ()) {
+			if (! \Org\Util\Rbac::AccessDecision ()) {
 				//检查认证识别号
 				if (! $_SESSION [C ( 'USER_AUTH_KEY' )]) {
-					if ($this->isAjax()){ // zhanghuihua@msn.com
+					if (IS_AJAX){ // zhanghuihua@msn.com
 						$this->ajaxReturn(true, "", 301);
 					} else {
 						//跳转到认证网关
@@ -128,14 +126,13 @@ class CommonController extends Controller {
 		//取得满足条件的记录数
 		$count = $model->where ( $map )->count ( $countPk );
 		if ($count > 0) {
-			import ( "@.ORG.Util.Page" );
 			//创建分页对象
 			if (! empty ( $_REQUEST ['listRows'] )) {
 				$listRows = $_REQUEST ['listRows'];
 			} else {
 				$listRows = '';
 			}
-			$p = new \Page ( $count, $listRows );
+			$p = new \Org\Util\Page ( $count, $listRows );
 			//分页查询数据
 			$voList = $model->where($map)->order( "`" . $order . "` " . $sort)->limit($p->firstRow . ',' . $p->listRows)->select ( );
 
@@ -166,7 +163,7 @@ class CommonController extends Controller {
 		$this->assign ( 'numPerPage', $p->listRows );
 		$this->assign ( 'currentPage', !empty($_REQUEST[C('VAR_PAGE')])?$_REQUEST[C('VAR_PAGE')]:1);
 			
-		\Cookie::set ( '_currentUrl_', __SELF__ );
+		\Org\Util\Cookie::set ( '_currentUrl_', __SELF__ );
 		return;
 	}
 
@@ -180,7 +177,7 @@ class CommonController extends Controller {
 		//保存当前数据对象
 		$list=$model->add ();
 		if ($list!==false) { //保存成功
-			$this->assign ( 'jumpUrl', \Cookie::get ( '_currentUrl_' ) );
+			$this->assign ( 'jumpUrl', \Org\Util\Cookie::get ( '_currentUrl_' ) );
 			$this->success ('新增成功!');
 		} else {
 			//失败提示
@@ -216,7 +213,7 @@ class CommonController extends Controller {
 		$list=$model->save ();
 		if (false !== $list) {
 			//成功提示
-			$this->assign ( 'jumpUrl', \Cookie::get ( '_currentUrl_' ) );
+			$this->assign ( 'jumpUrl', \Org\Util\Cookie::get ( '_currentUrl_' ) );
 			$this->success ('编辑成功!');
 		} else {
 			//错误提示
