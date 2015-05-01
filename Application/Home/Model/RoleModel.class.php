@@ -1,5 +1,7 @@
 <?php
 // 角色模型
+namespace Home\Model;
+use \Home\Model\CommonModel;
 class RoleModel extends CommonModel {
 	public $_validate = array(
 		array('name','require','名称必须'),
@@ -77,41 +79,41 @@ class RoleModel extends CommonModel {
 		}
 	}
 
-function delGroupAction($groupId,$moduleId)
-{
-    $table = $this->tablePrefix.'access';
-
-    $result = $this->db->execute('delete from '.$table.' where level=3 and pid='.$moduleId.' and role_id='.$groupId);
-    if($result===false) {
-        return false;
-    }else {
-        return true;
-    }
-}
-
-function getGroupActionList($groupId,$moduleId)
-{
-    $table = $this->tablePrefix.'access';
-    $rs = $this->db->query('select b.id,b.title,b.name from '.$table.' as a ,'.$this->tablePrefix.'node as b where a.node_id=b.id and  b.pid='.$moduleId.' and  a.role_id='.$groupId.' ');
-    return $rs;
-}
-
-function setGroupActions($groupId,$actionIdList)
-{
-    if(empty($actionIdList)) {
-        return true;
-    }
-	if(is_array($actionIdList)) {
-	    $actionIdList = implode(',',$actionIdList);
+	function delGroupAction($groupId,$moduleId)
+	{
+	    $table = $this->tablePrefix.'access';
+	
+	    $result = $this->db->execute('delete from '.$table.' where level=3 and pid='.$moduleId.' and role_id='.$groupId);
+	    if($result===false) {
+	        return false;
+	    }else {
+	        return true;
+	    }
 	}
-    $where = 'a.id ='.$groupId.' AND b.id in('.$actionIdList.')';
-    $rs = $this->db->execute('INSERT INTO '.$this->tablePrefix.'access (role_id,node_id,pid,level) SELECT a.id, b.id,b.pid,b.level FROM '.$this->tablePrefix.'role a, '.$this->tablePrefix.'node b WHERE '.$where);
-    if($result===false) {
-        return false;
-    }else {
-        return true;
-    }
-}
+	
+	function getGroupActionList($groupId,$moduleId)
+	{
+	    $table = $this->tablePrefix.'access';
+	    $rs = $this->db->query('select b.id,b.title,b.name from '.$table.' as a ,'.$this->tablePrefix.'node as b where a.node_id=b.id and  b.pid='.$moduleId.' and  a.role_id='.$groupId.' ');
+	    return $rs;
+	}
+	
+	function setGroupActions($groupId,$actionIdList)
+	{
+	    if(empty($actionIdList)) {
+	        return true;
+	    }
+		if(is_array($actionIdList)) {
+		    $actionIdList = implode(',',$actionIdList);
+		}
+	    $where = 'a.id ='.$groupId.' AND b.id in('.$actionIdList.')';
+	    $rs = $this->db->execute('INSERT INTO '.$this->tablePrefix.'access (role_id,node_id,pid,level) SELECT a.id, b.id,b.pid,b.level FROM '.$this->tablePrefix.'role a, '.$this->tablePrefix.'node b WHERE '.$where);
+	    if($result===false) {
+	        return false;
+	    }else {
+	        return true;
+	    }
+	}
 
 	function getGroupUserList($groupId)
 	{
@@ -174,4 +176,3 @@ function setGroupActions($groupId,$actionIdList)
     }
 
 }
-?>

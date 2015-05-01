@@ -1,6 +1,8 @@
 <?php
 // 角色模块
-class RoleAction extends CommonAction {
+namespace Home\Controller;
+use \Home\Controller\CommonController;
+class RoleController extends CommonController {
 	function _filter(&$map){
 		$map['name'] = array('like',"%".$_POST['name']."%");
 	}
@@ -380,4 +382,3 @@ class RoleAction extends CommonAction {
         return;
     }
 }
-?>

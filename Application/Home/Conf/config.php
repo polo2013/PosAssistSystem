@@ -1,5 +1,5 @@
 <?php
-$siteconfig	=	require './siteconfig.inc.php';
+$siteconfig	=	require 'siteconfig.inc.php';
 $config	= array(
 	/*
 	 * 0:普通模式 (采用传统癿URL参数模式 )

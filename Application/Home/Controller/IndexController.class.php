@@ -1,8 +1,38 @@
 <?php
 namespace Home\Controller;
-use Think\Controller;
-class IndexController extends Controller {
-    public function index(){
-        $this->show('<style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} body{ background: #fff; font-family: "微软雅黑"; color: #333;font-size:24px} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.8em; font-size: 36px } a,a:hover,{color:blue;}</style><div style="padding: 24px 48px;"> <h1>:)</h1><p>欢迎使用 <b>ThinkPHP</b>！</p><br/>版本 V{$Think.version}</div><script type="text/javascript" src="http://ad.topthink.com/Public/static/client.js"></script><thinkad id="ad_55e75dfae343f5a1"></thinkad><script type="text/javascript" src="http://tajs.qq.com/stats?sId=9347272" charset="UTF-8"></script>','utf-8');
-    }
+use \Home\Controller\CommonController;
+class IndexController extends CommonController {
+	// 框架首页
+	public function index() {
+		if (isset ( $_SESSION [C ( 'USER_AUTH_KEY' )] )) {
+			//显示菜单项
+			$menu = array ();
+				
+			//读取数据库模块列表生成菜单项
+			$node = M ( "Node" );
+			$id = $node->getField ( "id" );
+			$where ['level'] = 2;
+			$where ['status'] = 1;
+			$where ['pid'] = $id;
+			$list = $node->where ( $where )->field ( 'id,name,group_id,title' )->order ( 'sort asc' )->select ();
+			$accessList = $_SESSION ['_ACCESS_LIST'];
+			foreach ( $list as $key => $module ) {
+				if (isset ( $accessList [strtoupper ( APP_NAME )] [strtoupper ( $module ['name'] )] ) || $_SESSION ['administrator']) {
+					//设置模块访问权限
+					$module ['access'] = 1;
+					$menu [$key] = $module;
+				}
+			}
+				
+			if (! empty ( $_GET ['tag'] )) {
+				$this->assign ( 'menuTag', $_GET ['tag'] );
+			}
+			//dump($menu);
+			$this->assign ( 'menu', $menu );
+		}
+		C ( 'SHOW_RUN_TIME', false ); // 运行时间显示
+		C ( 'SHOW_PAGE_TRACE', false );
+		$this->display ();
+	}
+
 }

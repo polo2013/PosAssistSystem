@@ -8,10 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
-class PublicAction extends Action {
+namespace Home\Controller;
+use Think\Controller;
+class PublicController extends Controller {
 	// 检查用户是否登录
-
 	protected function checkUser() {
 		if(!isset($_SESSION[C('USER_AUTH_KEY')])) {
 			$this->assign('jumpUrl','Public/login');
@@ -74,45 +74,6 @@ class PublicAction extends Action {
 		$this->display();
 	}
 	
-//	public function menu() {
-//        $this->checkUser();
-//        if(isset($_SESSION[C('USER_AUTH_KEY')])) {
-//            //显示菜单项
-//            $menu  = array();
-//            if(isset($_SESSION['menu'.$_SESSION[C('USER_AUTH_KEY')]])) {
-//
-//                //如果已经缓存，直接读取缓存
-//                $menu   =   $_SESSION['menu'.$_SESSION[C('USER_AUTH_KEY')]];
-//            }else {
-//                //读取数据库模块列表生成菜单项
-//                $node    =   M("Node");
-//				$id	=	$node->getField("id");
-//				$where['level']=2;
-//				$where['status']=1;
-//				$where['pid']=$id;
-//                $list	=	$node->where($where)->field('id,name,group_id,title')->order('sort asc')->select();
-//                $accessList = $_SESSION['_ACCESS_LIST'];
-//                foreach($list as $key=>$module) {
-//                     if(isset($accessList[strtoupper(APP_NAME)][strtoupper($module['name'])]) || $_SESSION['administrator']) {
-//                        //设置模块访问权限
-//                        $module['access'] =   1;
-//                        $menu[$key]  = $module;
-//                    }
-//                }
-//                //缓存菜单访问
-//                $_SESSION['menu'.$_SESSION[C('USER_AUTH_KEY')]]	=	$menu;
-//            }
-//            if(!empty($_GET['tag'])){
-//                $this->assign('menuTag',$_GET['tag']);
-//            }
-//			//dump($menu);
-//            $this->assign('menu',$menu);
-//		}
-//		C('SHOW_RUN_TIME',false);			// 运行时间显示
-//		C('SHOW_PAGE_TRACE',false);
-//		$this->display();
-//	}
-
     // 后台首页 查看系统信息
     public function main() {
         $info = array(
@@ -180,8 +141,8 @@ class PublicAction extends Action {
 		if($_SESSION['verify'] != md5($_POST['verify'])) {
 			$this->error('验证码错误！');
 		}
-		import ( '@.ORG.Util.RBAC' );
-        $authInfo = RBAC::authenticate($map);
+		import ( 'ORG.Util.RBAC' );
+        $authInfo = \RBAC::authenticate($map);
         //使用用户名、密码和状态的方式进行认证
         if(false === $authInfo) {
             $this->error('帐号不存在或已禁用！');
@@ -209,7 +170,7 @@ class PublicAction extends Action {
 			$User->save($data);
 
 			// 缓存访问权限
-            RBAC::saveAccessList();
+            \RBAC::saveAccessList();
 			$this->success('登录成功！');
 
 		}
@@ -249,10 +210,10 @@ class PublicAction extends Action {
 	public function verify()
     {
 		$type	 =	 isset($_GET['type'])?$_GET['type']:'gif';
-        import("@.ORG.Util.Image");
-        Image::buildImageVerify(4,1,$type);
+        import("ORG.Util.Image");
+        \Image::buildImageVerify(4,1,$type);
     }
-// 修改资料
+	// 修改资料
 	public function change() {
 		$this->checkUser();
 		$User	 =	 D("User");
@@ -267,4 +228,3 @@ class PublicAction extends Action {
 		}
 	}
 }
-?>

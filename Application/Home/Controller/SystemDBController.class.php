@@ -1,6 +1,7 @@
 <?php
-class SystemDBAction extends CommonAction {
-	
+namespace Home\Controller;
+use \Home\Controller\CommonController;
+class SystemDBController extends CommonController {	
 	/**
 	 * 备份数据库
 	 */
@@ -57,4 +58,3 @@ class SystemDBAction extends CommonAction {
 		$this->success ( '数据备份成功<br><span style="color:red">'.$filename.'</span>' );
 	}
 }
-?>

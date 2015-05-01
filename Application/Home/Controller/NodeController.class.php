@@ -1,5 +1,7 @@
 <?php
-class NodeAction extends CommonAction {
+namespace Home\Controller;
+use \Home\Controller\CommonController;
+class NodeController extends CommonController {
 	public function _filter(&$map)
 	{
         if(!empty($_GET['group_id'])) {
@@ -92,4 +94,3 @@ class NodeAction extends CommonAction {
         return ;
     }
 }
-?>

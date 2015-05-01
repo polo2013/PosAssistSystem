@@ -1,5 +1,7 @@
 <?php
-class GroupAction extends CommonAction {
+namespace Home\Controller;
+use \Home\Controller\CommonController;
+class GroupController extends CommonController {
     /**
      +----------------------------------------------------------
      * 默认排序操作
@@ -28,4 +30,3 @@ class GroupAction extends CommonAction {
     }
 
 }
-?>

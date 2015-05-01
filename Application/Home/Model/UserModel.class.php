@@ -1,5 +1,7 @@
 <?php
 // 用户模型
+namespace Home\Model;
+use \Home\Model\CommonModel;
 class UserModel extends CommonModel {
 	public $_validate	=	array(
 		array('account','/^[a-z]\w{3,}$/i','帐号格式错误'),
@@ -33,4 +35,3 @@ class UserModel extends CommonModel {
         return false;
     }
 }
-?>

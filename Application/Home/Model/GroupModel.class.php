@@ -1,5 +1,7 @@
 <?php
 // 配置类型模型
+namespace Home\Model;
+use \Home\Model\CommonModel;
 class GroupModel extends CommonModel {
 	protected $_validate = array(
 		array('name','require','名称必须'),
@@ -10,4 +12,3 @@ class GroupModel extends CommonModel {
 		array('create_time','time',self::MODEL_INSERT,'function'),
 		);
 }
-?>

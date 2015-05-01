@@ -1,4 +1,6 @@
 <?php
+namespace Home\Model;
+use \Home\Model\CommonModel;
 class FormModel extends CommonModel {
 	// 自动验证设置
 	protected $_validate	 =	 array(
@@ -14,4 +16,3 @@ class FormModel extends CommonModel {
 		);
 
 }
-?>

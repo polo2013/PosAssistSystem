@@ -1,6 +1,8 @@
 <?php
 // 后台用户模块
-class UserAction extends CommonAction {
+namespace Home\Controller;
+use \Home\Controller\CommonController;
+class UserController extends CommonController {
 	function _filter(&$map){
 		  $map['id'] = array('egt',2);
 		$map['account'] = array('like',"%".$_POST['account']."%");
@@ -92,4 +94,3 @@ class UserAction extends CommonAction {
         $this->forward ();
     }
 }
-?>
