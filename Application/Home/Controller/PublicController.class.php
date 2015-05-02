@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 namespace Home\Controller;
 use Think\Controller;
+use Org\Util\Rbac;
 class PublicController extends Controller {
 	// 检查用户是否登录
 	protected function checkUser() {
@@ -150,7 +151,7 @@ class PublicController extends Controller {
 		// 支持使用绑定帐号登录
 		$map['account']	= $_POST['account'];
         $map["status"]	=	array('gt',0);
-        $authInfo = \ORG\Util\Rbac::authenticate($map);
+        $authInfo = \Org\Util\Rbac ::authenticate($map);
         //使用用户名、密码和状态的方式进行认证
         if(false === $authInfo) {
             $this->error('帐号不存在或已禁用！');

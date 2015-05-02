@@ -23,7 +23,8 @@
 <script type="text/javascript">
 function fleshVerify(){
 	//重载验证码
-	$('#verifyImg').attr("src", '__APP__/Public/verify/'+new Date().getTime());
+	//$('#verifyImg').attr("src", '__APP__/Public/verify/'+new Date().getTime());
+	$('#verifyImg').attr("src", '__APP__/Public/verify');
 }
 function dialogAjaxMenu(json){
 	dialogAjaxDone(json);
@@ -63,7 +64,7 @@ $(function(){
 					<li><a href="__APP__/Public/main" target="dialog" width="580" height="360" rel="sysInfo">系统消息</a></li>
 					<li><a href="__APP__/Public/password/" target="dialog" mask="true">修改密码</a></li>
 					<li><a href="__APP__/Public/profile/" target="dialog" mask="true">修改资料</a></li>
-					<li><a href="__APP__/Public/logout/">退出</a></li>
+					<li><a href="__MODULE__/Public/logout/">退出</a></li>
 				</ul>
 				<ul class="themeList" id="themeList">
 					<li theme="default"><div class="selected">蓝色</div></li>
