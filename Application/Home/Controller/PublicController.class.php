@@ -10,7 +10,6 @@
 // +----------------------------------------------------------------------
 namespace Home\Controller;
 use Think\Controller;
-use Org\Util\Rbac;
 class PublicController extends Controller {
 	// 检查用户是否登录
 	protected function checkUser() {
@@ -118,7 +117,7 @@ class PublicController extends Controller {
 			unset($_SESSION[C('USER_AUTH_KEY')]);
 			unset($_SESSION);
 			session_destroy();
-            $this->assign("jumpUrl",__URL__.'/login/');
+            $this->assign("jumpUrl",__CONTROLLER__.'/login/');
             $this->success('登出成功！');
         }else {
             $this->error('已经登出！');
@@ -189,11 +188,11 @@ class PublicController extends Controller {
     {
 		$this->checkUser();
         //对表单提交处理进行处理或者增加非表单数据
-		if(md5($_POST['verify'])	!= $_SESSION['verify']) {
+		if(! $this->check_verify($_POST['verify'])) {
 			$this->error('验证码错误！');
 		}
 		$map	=	array();
-        $map['password']= pwdHash($_POST['oldpassword']);
+        $map['password']= md5($_POST['oldpassword']);
         if(isset($_POST['account'])) {
             $map['account']	 =	 $_POST['account'];
         }elseif(isset($_SESSION[C('USER_AUTH_KEY')])) {
@@ -204,7 +203,7 @@ class PublicController extends Controller {
         if(!$User->where($map)->field('id')->find()) {
             $this->error('旧密码不符或者用户名错误！');
         }else {
-			$User->password	=	pwdHash($_POST['password']);
+			$User->password	=	md5($_POST['password']);
 			$User->save();
 			$this->success('密码修改成功！');
          }

@@ -8,7 +8,7 @@ class CommonController extends Controller {
 			if (! \Org\Util\Rbac::AccessDecision ()) {
 				//检查认证识别号
 				if (! $_SESSION [C ( 'USER_AUTH_KEY' )]) {
-					if (IS_AJAX){ // zhanghuihua@msn.com
+					if (IS_AJAX){ 
 						$this->ajaxReturn(true, "", 301);
 					} else {
 						//跳转到认证网关
@@ -35,7 +35,7 @@ class CommonController extends Controller {
 		if (method_exists ( $this, '_filter' )) {
 			$this->_filter ( $map );
 		}
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = D ($name);
 		if (! empty ( $model )) {
 			$this->_list ( $model, $map );
@@ -77,9 +77,9 @@ class CommonController extends Controller {
 	protected function _search($name = '') {
 		//生成查询条件
 		if (empty ( $name )) {
-			$name = $this->getActionName();
+			$name = CONTROLLER_NAME;
 		}
-		$name = $this->getActionName();
+		
 		$model = D ( $name );
 		$map = array ();
 		foreach ( $model->getDbFields () as $key => $val ) {
@@ -87,6 +87,7 @@ class CommonController extends Controller {
 				$map [$val] = $_REQUEST [$val];
 			}
 		}
+		
 		return $map;
 
 	}
@@ -118,7 +119,6 @@ class CommonController extends Controller {
 		//排序方式默认按照倒序排列
 		//接受 sost参数 0 表示倒序 非0都 表示正序
 		if (isset ( $_REQUEST ['_sort'] )) {
-			//			$sort = $_REQUEST ['_sort'] ? 'asc' : 'desc';
 			$sort = $_REQUEST ['_sort'] == 'asc' ? 'asc' : 'desc'; //zhanghuihua@msn.com
 		} else {
 			$sort = $asc ? 'asc' : 'desc';
@@ -158,18 +158,16 @@ class CommonController extends Controller {
 			$this->assign ( "page", $page );
 		}
 
-		//zhanghuihua@msn.com
 		$this->assign ( 'totalCount', $count );
 		$this->assign ( 'numPerPage', $p->listRows );
 		$this->assign ( 'currentPage', !empty($_REQUEST[C('VAR_PAGE')])?$_REQUEST[C('VAR_PAGE')]:1);
-			
 		\Org\Util\Cookie::set ( '_currentUrl_', __SELF__ );
 		return;
 	}
 
 	function insert() {
 		//B('FilterString');
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = D ($name);
 		if (false === $model->create ()) {
 			$this->error ( $model->getError () );
@@ -194,7 +192,7 @@ class CommonController extends Controller {
 	}
 
 	function edit() {
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = M ( $name );
 		$id = $_REQUEST [$model->getPk ()];
 		$vo = $model->getById ( $id );
@@ -204,7 +202,7 @@ class CommonController extends Controller {
 
 	function update() {
 		//B('FilterString');
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = D ( $name );
 		if (false === $model->create ()) {
 			$this->error ( $model->getError () );
@@ -233,7 +231,7 @@ class CommonController extends Controller {
 	 */
 	public function delete() {
 		//删除指定记录
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = M ($name);
 		if (! empty ( $model )) {
 			$pk = $model->getPk ();
@@ -253,7 +251,7 @@ class CommonController extends Controller {
 	}
 	public function foreverdelete() {
 		//删除指定记录
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = D ($name);
 		if (! empty ( $model )) {
 			$pk = $model->getPk ();
@@ -275,7 +273,7 @@ class CommonController extends Controller {
 
 	public function clear() {
 		//删除指定记录
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = D ($name);
 		if (! empty ( $model )) {
 			if (false !== $model->where ( 'status=-1' )->delete ()) { // zhanghuihua@msn.com change status=1 to status=-1
@@ -300,7 +298,7 @@ class CommonController extends Controller {
 	 +----------------------------------------------------------
 	 */
 	public function forbid() {
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = D ($name);
 		$pk = $model->getPk ();
 		$id = $_REQUEST [$pk];
@@ -314,7 +312,7 @@ class CommonController extends Controller {
 		}
 	}
 	public function checkPass() {
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = D ($name);
 		$pk = $model->getPk ();
 		$id = $_GET [$pk];
@@ -328,7 +326,7 @@ class CommonController extends Controller {
 	}
 
 	public function recycle() {
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = D ($name);
 		$pk = $model->getPk ();
 		$id = $_GET [$pk];
@@ -346,7 +344,7 @@ class CommonController extends Controller {
 	public function recycleBin() {
 		$map = $this->_search ();
 		$map ['status'] = - 1;
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = D ($name);
 		if (! empty ( $model )) {
 			$this->_list ( $model, $map );
@@ -368,7 +366,7 @@ class CommonController extends Controller {
 	 */
 	function resume() {
 		//恢复指定记录
-		$name=$this->getActionName();
+		$name=CONTROLLER_NAME;
 		$model = D ($name);
 		$pk = $model->getPk ();
 		$id = $_GET [$pk];
@@ -386,7 +384,7 @@ class CommonController extends Controller {
 		$seqNoList = $_POST ['seqNoList'];
 		if (! empty ( $seqNoList )) {
 			//更新数据对象
-			$name=$this->getActionName();
+			$name=CONTROLLER_NAME;
 			$model = D ($name);
 			$col = explode ( ',', $seqNoList );
 			//启动事务

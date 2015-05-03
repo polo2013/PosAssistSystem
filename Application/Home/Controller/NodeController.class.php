@@ -24,6 +24,7 @@ class NodeController extends CommonController {
                 $this->assign('level',1);
             }
         }
+        
 	}
 
 	public function _before_index() {

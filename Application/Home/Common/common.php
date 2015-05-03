@@ -86,25 +86,24 @@ function IP($ip = '', $file = 'UTFWry.dat') {
 	if (isset ( $_ip [$ip] )) {
 		return $_ip [$ip];
 	} else {
-		import ( "ORG.Net.IpLocation" );
-		$iplocation = new IpLocation ( $file );
+		$iplocation = new \Org\Net\IpLocation ( $file );
 		$location = $iplocation->getlocation ( $ip );
 		$_ip [$ip] = $location ['country'] . $location ['area'];
 	}
 	return $_ip [$ip];
 }
 
-function getNodeName($id) {
-	if (Session::is_set ( 'nodeNameList' )) {
-		$name = Session::get ( 'nodeNameList' );
-		return $name [$id];
-	}
-	$Group = D ( "Node" );
-	$list = $Group->getField ( 'id,name' );
-	$name = $list [$id];
-	Session::set ( 'nodeNameList', $list );
-	return $name;
-}
+// function getNodeName($id) {
+// 	if (Session::is_set ( 'nodeNameList' )) {
+// 		$name = Session::get ( 'nodeNameList' );
+// 		return $name [$id];
+// 	}
+// 	$Group = D ( "Node" );
+// 	$list = $Group->getField ( 'id,name' );
+// 	$name = $list [$id];
+// 	Session::set ( 'nodeNameList', $list );
+// 	return $name;
+// }
 
 function get_pawn($pawn) {
 	if ($pawn == 0)
@@ -320,7 +319,7 @@ function attrById($name, $attr, $id){
 }
 function moduleAccess($moduleName) {
     if ($_SESSION ['administrator']) return true;
-    $Model = new Model();
+    $Model = new \Think\Model();
     $list = $Model->query("select m.id,m.name,m.group_id,m.title from node a, node m where a.id = m.pid and a.status=1 and m.status=1 and a.name='".APP_NAME."' and m.name='".$moduleName."'");
 
     $accessList = $_SESSION ['_ACCESS_LIST'];
@@ -332,4 +331,3 @@ function moduleAccess($moduleName) {
 
     return false;
 }
-?>
