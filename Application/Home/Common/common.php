@@ -93,17 +93,17 @@ function IP($ip = '', $file = 'UTFWry.dat') {
 	return $_ip [$ip];
 }
 
-// function getNodeName($id) {
-// 	if (Session::is_set ( 'nodeNameList' )) {
-// 		$name = Session::get ( 'nodeNameList' );
-// 		return $name [$id];
-// 	}
-// 	$Group = D ( "Node" );
-// 	$list = $Group->getField ( 'id,name' );
-// 	$name = $list [$id];
-// 	Session::set ( 'nodeNameList', $list );
-// 	return $name;
-// }
+function getNodeName($id) {
+	if (Org\Util\Session::is_set ( 'nodeNameList' )) {
+		$name = Org\Util\Session::get ( 'nodeNameList' );
+		return $name [$id];
+	}
+	$Group = D ( "Node" );
+	$list = $Group->getField ( 'id,name' );
+	$name = $list [$id];
+	Org\Util\Session::set ( 'nodeNameList', $list );
+	return $name;
+}
 
 function get_pawn($pawn) {
 	if ($pawn == 0)
